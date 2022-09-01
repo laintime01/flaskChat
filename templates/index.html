@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.min.js"></script>
+</head>
+<body style="text-align: center; font-family: Arial,serif; font-size: 14pt">
+<script type="text/javascript">
+    $(document).ready(function() {
+        // can change localhost to 192.168.x.x to chat with other pc
+        var socket = io.connect("http://localhost:5000")
+        socket.on('connect', function() {
+            socket.send("User connected!");
+        });
+        socket.on('message', function(data) {
+            $('#messages').append($('<p>').text(data));
+        });
+
+        $('#sendBtn').on('click', function() {
+            socket.send($('#username').val() + ': ' + $('#message').val());
+            $('#message').val('');
+        })
+
+    })
+</script>
+<div id="messages" style="margin: 0 auto; width: 60%; text-align: left; min-height: 400px">
+</div>
+<input id="username" type="text" placeholder="username">
+<input id="message" type="text" placeholder="message">
+<button id="sendBtn">send</button>
+
+
+</body>
+</html>
